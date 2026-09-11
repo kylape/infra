@@ -77,7 +77,10 @@ func mainCmd() error {
 		return errors.Wrapf(err, "failed to create Slack client")
 	}
 
-	bqClient, err := bqutil.NewClient(cfg.BigQuery)
+	// BigQuery is intentionally disabled while provider portability is being
+	// implemented. Keep the client wiring so the cluster service does not need
+	// a second interface change when a replacement audit sink is added.
+	bqClient, err := bqutil.NewClient(nil)
 	if err != nil {
 		return errors.Wrapf(err, "failed to create bqClient")
 	}
