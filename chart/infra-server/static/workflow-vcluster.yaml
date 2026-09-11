@@ -50,7 +50,7 @@ spec:
             valueFrom:
               path: /outputs/cluster-name
       container:
-        image: "{{ required \"A valid .Values.vcluster.runnerImage entry is required!\" .Values.vcluster.runnerImage }}"
+        image: '{{ required "A valid .Values.vcluster.runnerImage entry is required!" .Values.vcluster.runnerImage }}'
         imagePullPolicy: Always
         command:
           - /usr/local/bin/provider
@@ -69,7 +69,7 @@ spec:
     - name: destroy
       activeDeadlineSeconds: 900
       container:
-        image: "{{ required \"A valid .Values.vcluster.runnerImage entry is required!\" .Values.vcluster.runnerImage }}"
+        image: '{{ required "A valid .Values.vcluster.runnerImage entry is required!" .Values.vcluster.runnerImage }}'
         imagePullPolicy: Always
         command:
           - /usr/local/bin/provider
