@@ -114,4 +114,3 @@ The following are deliberately outside the first proof of concept:
 * provider-specific workflow templating beyond the single vCluster workflow;
 * BigQuery audit integration;
 * public per-vCluster ingress and externally routable kubeconfigs.
-
