@@ -61,4 +61,3 @@ subjects:
   - kind: ServiceAccount
     name: infra-vcluster-runner
     namespace: default
-
