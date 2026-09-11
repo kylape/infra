@@ -50,15 +50,15 @@ spec:
             valueFrom:
               path: /outputs/cluster-name
       container:
-        image: {{ required "A valid .Values.vcluster.runnerImage entry is required!" .Values.vcluster.runnerImage }}
+        image: "{{ required \"A valid .Values.vcluster.runnerImage entry is required!\" .Values.vcluster.runnerImage }}"
         imagePullPolicy: Always
         command:
           - /usr/local/bin/provider
         args:
           - create
-          - --name={{ "{{" }}workflow.parameters.name{{ "}}" }}
-          - --namespace={{ "{{" }}workflow.parameters.namespace{{ "}}" }}
-          - --server={{ "{{" }}workflow.parameters.server{{ "}}" }}
+          - '--name={{ "{{" }}workflow.parameters.name{{ "}}" }}'
+          - '--namespace={{ "{{" }}workflow.parameters.namespace{{ "}}" }}'
+          - '--server={{ "{{" }}workflow.parameters.server{{ "}}" }}'
         volumeMounts:
           - name: data
             mountPath: /outputs
@@ -69,14 +69,14 @@ spec:
     - name: destroy
       activeDeadlineSeconds: 900
       container:
-        image: {{ required "A valid .Values.vcluster.runnerImage entry is required!" .Values.vcluster.runnerImage }}
+        image: "{{ required \"A valid .Values.vcluster.runnerImage entry is required!\" .Values.vcluster.runnerImage }}"
         imagePullPolicy: Always
         command:
           - /usr/local/bin/provider
         args:
           - delete
-          - --name={{ "{{" }}workflow.parameters.name{{ "}}" }}
-          - --namespace={{ "{{" }}workflow.parameters.namespace{{ "}}" }}
+          - '--name={{ "{{" }}workflow.parameters.name{{ "}}" }}'
+          - '--namespace={{ "{{" }}workflow.parameters.namespace{{ "}}" }}'
         volumeMounts:
           - name: data
             mountPath: /outputs
