@@ -1,0 +1,98 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: infra-vcluster-runner-build
+  namespace: infra
+  labels:
+    app.kubernetes.io/name: infra-vcluster-runner
+spec:
+  description: Build and publish the vCluster provider runner used by Infra.
+  params:
+    - name: git-url
+      type: string
+      description: Git repository containing provider/vcluster.
+    - name: git-revision
+      type: string
+      default: master
+    - name: image
+      type: string
+      description: Fully qualified destination image, including tag.
+    - name: vcluster-version
+      type: string
+      default: 0.25.1
+    - name: kubectl-version
+      type: string
+      default: v1.32.4
+  workspaces:
+    - name: source
+    - name: registry-auth
+      optional: true
+  tasks:
+    - name: clone
+      taskSpec:
+        params:
+          - name: git-url
+          - name: git-revision
+        workspaces:
+          - name: source
+        steps:
+          - name: clone
+            image: alpine/git:2.47.2
+            script: |
+              #!/bin/sh
+              set -eu
+              rm -rf "$(workspaces.source.path)"/*
+              git clone --depth 1 --branch "$(params.git-revision)" \
+                "$(params.git-url)" "$(workspaces.source.path)"
+      params:
+        - name: git-url
+          value: $(params.git-url)
+        - name: git-revision
+          value: $(params.git-revision)
+      workspaces:
+        - name: source
+          workspace: source
+
+    - name: build-and-push
+      runAfter: [clone]
+      taskSpec:
+        params:
+          - name: image
+          - name: vcluster-version
+          - name: kubectl-version
+        workspaces:
+          - name: source
+          - name: registry-auth
+        steps:
+          - name: build-and-push
+            image: quay.io/buildah/stable:v1.39.3
+            securityContext:
+              privileged: true
+            script: |
+              #!/usr/bin/env bash
+              set -Eeuo pipefail
+
+              if [[ -f "$(workspaces.registry-auth.path)/.dockerconfigjson" ]]; then
+                export REGISTRY_AUTH_FILE="$(workspaces.registry-auth.path)/.dockerconfigjson"
+              fi
+
+              buildah bud \
+                --format=oci \
+                --build-arg="VCLUSTER_VERSION=$(params.vcluster-version)" \
+                --build-arg="KUBECTL_VERSION=$(params.kubectl-version)" \
+                --tag "$(params.image)" \
+                "$(workspaces.source.path)/provider/vcluster"
+              buildah push "$(params.image)" "docker://$(params.image)"
+      params:
+        - name: image
+          value: $(params.image)
+        - name: vcluster-version
+          value: $(params.vcluster-version)
+        - name: kubectl-version
+          value: $(params.kubectl-version)
+      workspaces:
+        - name: source
+          workspace: source
+        - name: registry-auth
+          workspace: registry-auth
+
