@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infra-pirate
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: infra
+    app.kubernetes.io/part-of: llm-d-e2e-poc
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infra
+  sources:
+    # Deploy the existing Infra Helm chart from this fork.
+    - repoURL: git@github.com:kylape/infra.git
+      targetRevision: master
+      path: chart/infra-server
+      helm:
+        valueFiles:
+          - $values/gitops/pirate/values.public.yaml
+
+    # Keep the values in the same repository, but separate from the chart
+    # source so this can later be replaced by a secret/plugin-backed source.
+    - repoURL: git@github.com:kylape/infra.git
+      targetRevision: master
+      ref: values
+
+    # Add the OpenShift Route which the current GKE-oriented chart does not
+    # provide. Include only the Route; do not recursively apply this directory.
+    - repoURL: git@github.com:kylape/infra.git
+      targetRevision: master
+      path: gitops/pirate
+      directory:
+        include: route.yaml
+
+  # Keep this Application manual until the confidential configuration and
+  # OpenShift-specific chart changes are supplied.
+  syncPolicy: {}
