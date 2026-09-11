@@ -95,4 +95,3 @@ spec:
           workspace: source
         - name: registry-auth
           workspace: registry-auth
-
