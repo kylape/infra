@@ -4,6 +4,10 @@ metadata:
   generateName: infra-vcluster-runner-build-
   namespace: infra
 spec:
+  taskRunSpecs:
+    - pipelineTaskName: build-and-push
+      podTemplate:
+        hostUsers: false
   pipelineRef:
     name: infra-vcluster-runner-build
   params:
@@ -28,4 +32,3 @@ spec:
     - name: registry-auth
       secret:
         secretName: infra-vcluster-registry-auth
-
