@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: infra-server
+  namespace: infra
+  labels:
+    app.kubernetes.io/name: infra-server
+spec:
+  to:
+    kind: Service
+    name: infra-server-service
+  port:
+    targetPort: https
+  tls:
+    termination: passthrough
