@@ -1,0 +1,14 @@
+# Public values for the Pirate development deployment.
+#
+# Confidential values are intentionally not stored in this repository. The
+# current chart requires those values to render infra-server-secrets; see the
+# accompanying README before syncing the Argo CD Application.
+
+environment: development
+monitoring:
+  enabled: false
+testMode: true
+tag: latest
+
+# testMode disables the chart's GKE Ingress and ManagedCertificate resources.
+# The OpenShift Route is supplied separately by this GitOps directory.
