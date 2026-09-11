@@ -54,34 +54,8 @@ spec:
 
     - name: build-and-push
       runAfter: [clone]
-      taskSpec:
-        params:
-          - name: image
-          - name: vcluster-version
-          - name: kubectl-version
-        workspaces:
-          - name: source
-          - name: registry-auth
-        steps:
-          - name: build-and-push
-            image: quay.io/buildah/stable:v1.39.3
-            securityContext:
-              privileged: true
-            script: |
-              #!/usr/bin/env bash
-              set -Eeuo pipefail
-
-              if [[ -f "$(workspaces.registry-auth.path)/.dockerconfigjson" ]]; then
-                export REGISTRY_AUTH_FILE="$(workspaces.registry-auth.path)/.dockerconfigjson"
-              fi
-
-              buildah bud \
-                --format=oci \
-                --build-arg="VCLUSTER_VERSION=$(params.vcluster-version)" \
-                --build-arg="KUBECTL_VERSION=$(params.kubectl-version)" \
-                --tag "$(params.image)" \
-                "$(workspaces.source.path)/provider/vcluster"
-              buildah push "$(params.image)" "docker://$(params.image)"
+      taskRef:
+        name: infra-vcluster-runner-buildah
       params:
         - name: image
           value: $(params.image)
