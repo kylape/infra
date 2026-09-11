@@ -1,0 +1,82 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: vcluster-
+spec:
+  entrypoint: start
+  onExit: stop
+  arguments:
+    parameters:
+      - name: name
+      - name: namespace
+        value: infra-vclusters
+      - name: server
+        value: ""
+
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Mi
+
+  templates:
+    - name: start
+      steps:
+        - - name: create
+            template: create
+        - - name: wait
+            template: wait
+
+    - name: stop
+      steps:
+        - - name: destroy
+            template: destroy
+
+    - name: create
+      activeDeadlineSeconds: 1800
+      outputs:
+        artifacts:
+          - name: kubeconfig
+            path: /outputs/kubeconfig
+            mode: 0644
+            archive:
+              none: {}
+        parameters:
+          - name: cluster-name
+            valueFrom:
+              path: /outputs/cluster-name
+      container:
+        image: {{ required "A valid .Values.vcluster.runnerImage entry is required!" .Values.vcluster.runnerImage }}
+        imagePullPolicy: Always
+        command:
+          - /usr/local/bin/provider
+        args:
+          - create
+          - --name={{ "{{" }}workflow.parameters.name{{ "}}" }}
+          - --namespace={{ "{{" }}workflow.parameters.namespace{{ "}}" }}
+          - --server={{ "{{" }}workflow.parameters.server{{ "}}" }}
+        volumeMounts:
+          - name: data
+            mountPath: /outputs
+
+    - name: wait
+      suspend: {}
+
+    - name: destroy
+      activeDeadlineSeconds: 900
+      container:
+        image: {{ required "A valid .Values.vcluster.runnerImage entry is required!" .Values.vcluster.runnerImage }}
+        imagePullPolicy: Always
+        command:
+          - /usr/local/bin/provider
+        args:
+          - delete
+          - --name={{ "{{" }}workflow.parameters.name{{ "}}" }}
+          - --namespace={{ "{{" }}workflow.parameters.namespace{{ "}}" }}
+        volumeMounts:
+          - name: data
+            mountPath: /outputs
+
