@@ -1,3 +1,7 @@
 # Default chart values. Override via --set or additional values files.
 monitoring:
   enabled: true
+
+# Runner image used by the single proof-of-concept vCluster flavor.
+vcluster:
+  runnerImage: quay.io/kylape/infra-vcluster-runner:latest
