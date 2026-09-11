@@ -24,7 +24,7 @@ spec:
     - name: git-revision
       value: codex/vcluster-provider-poc
     - name: image
-      value: quay.io/kylape/infra-vcluster-runner:0.1.0
+      value: quay.io/klape/infra:0.1.0
   workspaces:
     - name: source
       volumeClaimTemplate:

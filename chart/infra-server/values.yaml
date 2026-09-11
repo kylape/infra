@@ -4,4 +4,4 @@ monitoring:
 
 # Runner image used by the single proof-of-concept vCluster flavor.
 vcluster:
-  runnerImage: quay.io/kylape/infra-vcluster-runner:latest
+  runnerImage: quay.io/klape/infra:latest
