@@ -38,7 +38,6 @@ spec:
         secretName: replace-with-registry-auth-secret
 ```
 
-After the image is published, set
-`chart/infra-server.values.vcluster.runnerImage` to the immutable image tag or
-digest before deploying Infra.
-
+After the image is published, set `vcluster.runnerImage` in
+`chart/infra-server/values.yaml` to the immutable image tag or digest before
+deploying Infra.
