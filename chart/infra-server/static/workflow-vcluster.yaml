@@ -5,6 +5,7 @@ metadata:
 spec:
   entrypoint: start
   onExit: stop
+  serviceAccountName: infra-vcluster-runner
   arguments:
     parameters:
       - name: name
@@ -79,4 +80,3 @@ spec:
         volumeMounts:
           - name: data
             mountPath: /outputs
-
