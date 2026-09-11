@@ -6,7 +6,7 @@ metadata:
 spec:
   taskRunSpecs:
     - pipelineTaskName: build-and-push
-      taskServiceAccountName: default
+      serviceAccountName: default
       podTemplate:
         hostUsers: false
   pipelineRef:
