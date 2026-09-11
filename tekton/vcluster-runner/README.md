@@ -22,7 +22,7 @@ spec:
     - name: git-url
       value: https://github.com/kylape/infra.git
     - name: git-revision
-      value: master
+      value: codex/vcluster-provider-poc
     - name: image
       value: quay.io/kylape/infra-vcluster-runner:0.1.0
   workspaces:

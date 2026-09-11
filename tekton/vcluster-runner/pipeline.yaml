@@ -13,7 +13,7 @@ spec:
       description: Git repository containing provider/vcluster.
     - name: git-revision
       type: string
-      default: master
+      default: codex/vcluster-provider-poc
     - name: image
       type: string
       description: Fully qualified destination image, including tag.
