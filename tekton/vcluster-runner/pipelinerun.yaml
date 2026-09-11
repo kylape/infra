@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: infra-vcluster-runner-build-
+  namespace: infra
+spec:
+  pipelineRef:
+    name: infra-vcluster-runner-build
+  params:
+    - name: git-url
+      value: https://github.com/kylape/infra.git
+    - name: git-revision
+      value: codex/vcluster-provider-poc
+    - name: image
+      value: quay.io/klape/infra:0.1.0
+    - name: vcluster-version
+      value: 0.25.1
+    - name: kubectl-version
+      value: v1.32.4
+  workspaces:
+    - name: source
+      volumeClaimTemplate:
+        spec:
+          accessModes: [ReadWriteOnce]
+          resources:
+            requests:
+              storage: 1Gi
+    - name: registry-auth
+      secret:
+        secretName: infra-vcluster-registry-auth
+
