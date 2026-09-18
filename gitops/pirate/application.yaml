@@ -36,4 +36,7 @@ spec:
 
   # Keep this Application manual until the confidential configuration and
   # OpenShift-specific chart changes are supplied.
-  syncPolicy: {}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
