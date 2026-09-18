@@ -14,7 +14,7 @@ var (
 		[]string{"flavor"},
 	)
 
-	// ArtifactCacheHitsCounter tracks successful cache lookups for GCS artifacts
+	// ArtifactCacheHitsCounter tracks successful cache lookups for object-store artifacts
 	ArtifactCacheHitsCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: "infra",
@@ -23,7 +23,7 @@ var (
 		},
 	)
 
-	// ArtifactCacheMissesCounter tracks cache misses requiring GCS API calls
+	// ArtifactCacheMissesCounter tracks cache misses requiring object-store API calls
 	ArtifactCacheMissesCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: "infra",

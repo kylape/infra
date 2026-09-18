@@ -91,7 +91,7 @@ func download(downloadDir string, artifact *v1.Artifact) (filename string, err e
 		return "", err
 	}
 
-	// Download the (GCS signed) URL.
+	// Download the signed object-storage URL.
 	resp, err := http.Get(artifact.URL)
 	if err != nil {
 		return "", err

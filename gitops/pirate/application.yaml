@@ -10,7 +10,7 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: infra
+    namespace: infra-system
   sources:
     # Deploy the existing Infra Helm chart from this fork.
     - repoURL: git@github.com:kylape/infra.git
@@ -25,6 +25,14 @@ spec:
     - repoURL: git@github.com:kylape/infra.git
       targetRevision: master
       ref: values
+
+
+    # Deploy the S3-compatible artifact store before Argo Workflows starts.
+    - repoURL: git@github.com:kylape/infra.git
+      targetRevision: master
+      path: gitops/pirate
+      directory:
+        include: minio.yaml
 
     # Add the OpenShift Route which the current GKE-oriented chart does not
     # provide. Include only the Route; do not recursively apply this directory.

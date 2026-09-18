@@ -22,8 +22,15 @@ argo-workflows:
 
   artifactRepository:
     archiveLogs: true
-    gcs:
-      bucket: rhacs-infra-artifacts
-      serviceAccountKeySecret:
-        name: gcs-credentials
-        key: credentials.json
+    s3:
+      endpoint: minio.object-storage.svc.cluster.local:9000
+      bucket: infra-artifacts
+      insecure: true
+      accessKeySecret:
+        name: minio-artifact-credentials
+        key: accesskey
+      secretKeySecret:
+        name: minio-artifact-credentials
+        key: secretkey
+      createBucketIfNotPresent:
+        enabled: true

@@ -27,10 +27,28 @@ spec:
         - name: infra-server
           image: quay.io/rhacs-eng/infra-server:{{ required "A valid .Values.tag entry is required!" .Values.tag }}
           env:
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /configuration/google-credentials.json
             - name: TEST_MODE
               value: "{{ .Values.testMode }}"
+            - name: MINIO_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: infra-server-secrets
+                  key: minio-endpoint
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: infra-server-secrets
+                  key: minio-access-key
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: infra-server-secrets
+                  key: minio-secret-key
+            - name: MINIO_SECURE
+              valueFrom:
+                secretKeyRef:
+                  name: infra-server-secrets
+                  key: minio-secure
           readinessProbe:
             httpGet:
               path: /healthz

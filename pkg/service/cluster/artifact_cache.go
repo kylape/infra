@@ -13,7 +13,7 @@ const (
 	defaultCacheSize = 1000
 )
 
-// artifactCache provides thread-safe LRU caching of immutable GCS artifact contents.
+// artifactCache provides thread-safe LRU caching of immutable object-store artifact contents.
 // Since workflow artifacts don't change once written, no TTL is needed.
 type artifactCache struct {
 	cache *lru.Cache[string, []byte]

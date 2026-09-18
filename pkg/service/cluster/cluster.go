@@ -478,7 +478,7 @@ func (s *clusterImpl) Artifacts(_ context.Context, clusterID *v1.ResourceByID) (
 	for _, nodeStatus := range workflow.Status.Nodes {
 		if nodeStatus.Outputs != nil {
 			for _, artifact := range nodeStatus.Outputs.Artifacts {
-				if artifact.GCS == nil {
+				if artifact.S3 == nil {
 					continue
 				}
 

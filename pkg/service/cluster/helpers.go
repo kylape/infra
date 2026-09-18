@@ -111,7 +111,7 @@ func (s *clusterImpl) getClusterDetailsFromArtifacts(cluster *v1.Cluster, workfl
 		}
 
 		for _, artifact := range nodeStatus.Outputs.Artifacts {
-			if artifact.GCS == nil {
+			if artifact.S3 == nil {
 				continue
 			}
 
@@ -131,10 +131,10 @@ func (s *clusterImpl) getClusterDetailsFromArtifacts(cluster *v1.Cluster, workfl
 					continue
 				}
 
-				// Check cache first before making GCS API call
+				// Check cache first before making object-store API call
 				contents, found := s.artifactCache.Get(bucket, key)
 				if !found {
-					// Cache miss - fetch from GCS and cache the result
+					// Cache miss - fetch from object storage and cache the result
 					var err error
 					contents, err = s.signer.Contents(bucket, key)
 					if err != nil {
@@ -180,15 +180,15 @@ func handleArtifactMigration(workflow v1alpha1.Workflow, artifact v1alpha1.Artif
 	var key string
 
 	if workflow.Status.ArtifactRepositoryRef != nil &&
-		workflow.Status.ArtifactRepositoryRef.ArtifactRepository.GCS != nil &&
-		workflow.Status.ArtifactRepositoryRef.ArtifactRepository.GCS.Bucket != "" {
-		bucket = workflow.Status.ArtifactRepositoryRef.ArtifactRepository.GCS.Bucket
-	} else if artifact.GCS != nil && artifact.GCS.Bucket != "" {
-		bucket = artifact.GCS.Bucket
+		workflow.Status.ArtifactRepositoryRef.ArtifactRepository.S3 != nil &&
+		workflow.Status.ArtifactRepositoryRef.ArtifactRepository.S3.Bucket != "" {
+		bucket = workflow.Status.ArtifactRepositoryRef.ArtifactRepository.S3.Bucket
+	} else if artifact.S3 != nil && artifact.S3.Bucket != "" {
+		bucket = artifact.S3.Bucket
 	}
 
-	if artifact.GCS != nil && artifact.GCS.Key != "" {
-		key = artifact.GCS.Key
+	if artifact.S3 != nil && artifact.S3.Key != "" {
+		key = artifact.S3.Key
 	}
 
 	if bucket == "" || key == "" {

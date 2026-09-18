@@ -5,3 +5,9 @@ monitoring:
 # Runner image used by the single proof-of-concept vCluster flavor.
 vcluster:
   runnerImage: quay.io/klape/infra:latest
+
+# S3-compatible artifact storage used by Argo Workflows and Infra.
+minio_endpoint: ""
+minio_access_key: ""
+minio_secret_key: ""
+minio_secure: false

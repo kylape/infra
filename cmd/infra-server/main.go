@@ -69,7 +69,7 @@ func mainCmd() error {
 
 	signer, err := signer.NewFromEnv()
 	if err != nil {
-		return errors.Wrapf(err, "failed to load GCS signing credentials")
+		return errors.Wrapf(err, "failed to load MinIO artifact-store credentials")
 	}
 
 	slackClient, err := slack.New(cfg.Slack)
