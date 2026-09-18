@@ -33,7 +33,6 @@ spec:
       labels:
         app.kubernetes.io/name: minio
     spec:
-      hostUsers: false
       securityContext:
         runAsNonRoot: true
         seccompProfile:
