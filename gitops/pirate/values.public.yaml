@@ -8,11 +8,16 @@ environment: development
 monitoring:
   enabled: false
 testMode: true
-tag: latest
+tag: minio-poc-20260918
+image_repository: quay.io/klape/infra
+vcluster:
+  runnerImage: quay.io/klape/infra:minio-poc-20260918
 
 # Bootstrap this Secret once in the management vCluster. It contains the
 # OIDC configuration, including the persistent session signing key.
 oidc_secret_name: infra-server-oidc
+existing_config_secret_name: infra-server-secrets
+minio_artifact_secret_name: minio-artifact-credentials
 
 # testMode disables the chart's GKE Ingress and ManagedCertificate resources.
 # The OpenShift Route is supplied separately by this GitOps directory.
