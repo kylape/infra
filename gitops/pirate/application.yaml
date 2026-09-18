@@ -34,14 +34,6 @@ spec:
       directory:
         include: minio.yaml
 
-    # Add the OpenShift Route which the current GKE-oriented chart does not
-    # provide. Include only the Route; do not recursively apply this directory.
-    - repoURL: git@github.com:kylape/infra.git
-      targetRevision: codex/vcluster-provider-poc
-      path: gitops/pirate
-      directory:
-        include: route.yaml
-
   # Keep this Application manual until the confidential configuration and
   # OpenShift-specific chart changes are supplied.
   syncPolicy: {}
