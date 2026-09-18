@@ -86,7 +86,7 @@ spec:
           secret:
             secretName: {{ default "infra-server-secrets" .Values.existing_config_secret_name }}
           {{- end }}
-      {{- if .Values.pullSecrets.quay }}
+      {{- if and .Values.pullSecrets .Values.pullSecrets.quay }}
       imagePullSecrets:
         - name: infra-image-registry-pull-secret
       {{- end }}
