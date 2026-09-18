@@ -52,6 +52,13 @@ kubectl create secret generic keycloak-admin \
 ```
 
 Keycloak is deployed in development mode with ephemeral storage for this PoC.
+After the pod is ready, bootstrap the `infra` realm, its confidential `infra`
+client, and the `developer` user with `kcadm.sh`. The Keycloak Route is
+`https://keycloak-infra-vcluster-infra.apps.openshift.nm.rdu4.corp.redhat.com`.
+
+Because the Keycloak Route uses edge TLS termination, copy the OpenShift
+ingress CA into the vCluster as `infra-oidc-ca` with a `tls.crt` key. The
+Infra chart mounts that CA and uses it to validate the OIDC discovery endpoint.
 
 The host OpenShift Route is applied separately after vCluster service
 synchronization exposes the Infra Service in the management vCluster's host
