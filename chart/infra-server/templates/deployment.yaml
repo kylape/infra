@@ -79,12 +79,14 @@ spec:
           projected:
             sources:
               - secret:
-                  name: infra-server-secrets
+                  name: {{ default "infra-server-secrets" .Values.existing_config_secret_name }}
               - secret:
                   name: {{ .Values.oidc_secret_name }}
           {{- else }}
           secret:
-            secretName: infra-server-secrets
+            secretName: {{ default "infra-server-secrets" .Values.existing_config_secret_name }}
           {{- end }}
+      {{- if .Values.pullSecrets.quay }}
       imagePullSecrets:
         - name: infra-image-registry-pull-secret
+      {{- end }}
