@@ -1,8 +1,8 @@
-- id: vcluster
-  name: vCluster
-  description: Disposable vCluster hosted by the Infra management cluster.
+- id: vcluster-on-pirate
+  name: vCluster on Pirate
+  description: Disposable vCluster hosted by the Pirate OpenShift cluster.
   availability: default
-  workflow: configuration/workflow-vcluster.yaml
+  workflow: configuration/workflow-vcluster-on-pirate.yaml
   parameters:
     - name: name
       description: Name of the vCluster to create.
