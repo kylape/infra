@@ -10,5 +10,9 @@ monitoring:
 testMode: true
 tag: latest
 
+# Bootstrap this Secret once in the management vCluster. It contains the
+# OIDC configuration, including the persistent session signing key.
+oidc_secret_name: infra-server-oidc
+
 # testMode disables the chart's GKE Ingress and ManagedCertificate resources.
 # The OpenShift Route is supplied separately by this GitOps directory.
