@@ -13,3 +13,7 @@ minio_endpoint: ""
 minio_access_key: ""
 minio_secret_key: ""
 minio_secure: false
+
+# Name of a pre-created Secret containing an oidc.yaml key. When set, the
+# chart mounts that key instead of requiring oidc_yaml in Helm values.
+oidc_secret_name: ""
