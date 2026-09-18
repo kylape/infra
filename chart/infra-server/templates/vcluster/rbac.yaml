@@ -37,6 +37,12 @@ rules:
   - apiGroups: ["policy"]
     resources: [poddisruptionbudgets]
     verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["route.openshift.io"]
+    resources: [routes]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["config.openshift.io"]
+    resources: [ingresses]
+    verbs: [get, list, watch]
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources:
       - clusterrolebindings
