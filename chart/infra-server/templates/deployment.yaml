@@ -23,6 +23,10 @@ spec:
         app: infra-server
 
     spec:
+      {{- with .Values.extra_host_aliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: infra-server
           image: {{ default "quay.io/rhacs-eng/infra-server" .Values.image_repository }}:{{ required "A valid .Values.tag entry is required!" .Values.tag }}

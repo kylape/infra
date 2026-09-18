@@ -21,3 +21,7 @@ oidc_secret_name: ""
 # Use pre-created configuration and artifact credential Secrets in GitOps.
 existing_config_secret_name: ""
 minio_artifact_secret_name: ""
+
+# Optional host aliases for private cluster Routes that are not resolvable from
+# the guest DNS domain.
+extra_host_aliases: []
