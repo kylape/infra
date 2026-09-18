@@ -33,11 +33,11 @@ spec:
       labels:
         app.kubernetes.io/name: minio
     spec:
+      hostUsers: false
       securityContext:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
-        fsGroup: 1000
       containers:
         - name: minio
           image: quay.io/minio/minio:RELEASE.2024-06-13T22-53-53Z
