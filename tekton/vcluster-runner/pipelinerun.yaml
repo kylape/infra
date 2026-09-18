@@ -18,8 +18,6 @@ spec:
       value: codex/vcluster-provider-poc
     - name: image
       value: quay.io/klape/infra:0.1.0
-    - name: vcluster-version
-      value: 0.25.1
     - name: kubectl-version
       value: v1.32.4
   workspaces:
