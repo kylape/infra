@@ -11,8 +11,6 @@ spec:
       - name: name
       - name: namespace
         value: infra-vclusters
-      - name: server
-        value: ""
 
   volumeClaimTemplates:
     - metadata:
@@ -58,7 +56,6 @@ spec:
           - create
           - '--name={{ "{{" }}workflow.parameters.name{{ "}}" }}'
           - '--namespace={{ "{{" }}workflow.parameters.namespace{{ "}}" }}'
-          - '--server={{ "{{" }}workflow.parameters.server{{ "}}" }}'
         volumeMounts:
           - name: data
             mountPath: /outputs

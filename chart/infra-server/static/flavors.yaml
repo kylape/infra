@@ -14,11 +14,6 @@
       value: infra-vclusters
       kind: optional
 
-    - name: server
-      description: Public server address to embed in the generated kubeconfig.
-      value: ""
-      kind: optional
-
   artifacts:
     - name: kubeconfig
       description: Kubeconfig for connecting to the vCluster.
