@@ -16,6 +16,7 @@ require_command() {
 
 require_command kubectl
 require_command helm
+require_command git
 
 if [[ $# -ne 2 ]]; then
   echo "usage: $0 HOST_NAMESPACE VCLUSTER_NAME" >&2
@@ -24,7 +25,8 @@ fi
 
 HOST_NAMESPACE="$1"
 VCLUSTER_NAME="$2"
-VCLUSTER_VERSION="${VCLUSTER_VERSION:-0.36.1}"
+VCLUSTER_CHART_REPOSITORY="${VCLUSTER_CHART_REPOSITORY:-https://github.com/kylape/vcluster.git}"
+VCLUSTER_CHART_REVISION="${VCLUSTER_CHART_REVISION:-combined}"
 VCLUSTER_IMAGE_REGISTRY="${VCLUSTER_IMAGE_REGISTRY:-quay.io}"
 VCLUSTER_IMAGE_REPOSITORY="${VCLUSTER_IMAGE_REPOSITORY:-klape/vcluster}"
 VCLUSTER_IMAGE_TAG="${VCLUSTER_IMAGE_TAG:-csi-capacity-debug}"
@@ -48,11 +50,12 @@ echo "Creating namespace $HOST_NAMESPACE if needed"
 kubectl create namespace "$HOST_NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
 
 echo "Installing vCluster $VCLUSTER_NAME in $HOST_NAMESPACE"
-helm repo add loft https://charts.loft.sh >/dev/null
-helm repo update >/dev/null
-helm upgrade --install "$VCLUSTER_NAME" loft/vcluster \
+chart_dir="$(mktemp -d)"
+trap 'rm -rf "$chart_dir" "${tmp_kubeconfig:-}"' EXIT
+git clone --depth=1 --branch "$VCLUSTER_CHART_REVISION" \
+  "$VCLUSTER_CHART_REPOSITORY" "$chart_dir/vcluster"
+helm upgrade --install "$VCLUSTER_NAME" "$chart_dir/vcluster/chart" \
   --namespace "$HOST_NAMESPACE" \
-  --version "$VCLUSTER_VERSION" \
   --set controlPlane.statefulSet.image.registry="$VCLUSTER_IMAGE_REGISTRY" \
   --set controlPlane.statefulSet.image.repository="$VCLUSTER_IMAGE_REPOSITORY" \
   --set controlPlane.statefulSet.image.tag="$VCLUSTER_IMAGE_TAG" \
