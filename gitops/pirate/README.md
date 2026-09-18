@@ -15,9 +15,31 @@ the vCluster workload and the externally applied OpenShift Route.
 
 Create the `minio-root-credentials` Secret in `object-storage` before syncing
 `minio.yaml`. Its `accesskey` and `secretkey` values must match the confidential
-Helm values `minio_access_key` and `minio_secret_key`. Keep that Secret and the
-other Infra credentials outside Git, using the selected Argo CD secret delivery
-mechanism.
+Helm values `minio_access_key` and `minio_secret_key`.
+
+Create the `infra-server-oidc` Secret in `infra` before syncing the Application.
+It must contain an `oidc.yaml` key. Generate a long random `sessionSecret` and
+keep the file outside Git:
+
+```yaml
+issuer: https://accounts.google.com
+clientID: <registered-client-id>
+clientSecret: <registered-client-secret>
+endpoint: <Infra UI hostname>
+sessionSecret: <at-least-32-byte-random-value>
+accessTokenClaims: []
+tokenLifetime: 1h
+```
+
+```bash
+kubectl create secret generic infra-server-oidc \
+  --namespace infra \
+  --from-file=oidc.yaml=oidc.yaml
+```
+
+The Helm chart mounts this Secret into the Infra server without copying its
+contents into rendered Helm values. A secret delivery controller can replace
+this one-time bootstrap step later.
 
 The host OpenShift Route is applied separately after vCluster service
 synchronization exposes the Infra Service in the management vCluster's host
