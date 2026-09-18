@@ -12,7 +12,7 @@
     - name: namespace
       description: Namespace in which to host the vCluster.
       value: infra-vclusters
-      kind: optional
+      kind: hardcoded
 
   artifacts:
     - name: kubeconfig
