@@ -11,7 +11,7 @@
 
     - name: namespace
       description: Namespace in which to host the vCluster.
-      value: infra-vclusters
+      value: infra-vclusters-pirate
       kind: hardcoded
 
   artifacts:
