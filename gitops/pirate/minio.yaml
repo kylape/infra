@@ -79,5 +79,4 @@ spec:
               mountPath: /data
       volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: minio-data
+          emptyDir: {}
