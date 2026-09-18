@@ -10,34 +10,6 @@ kind: ClusterRole
 metadata:
   name: infra-vcluster-pirate-runner
 rules:
-  - apiGroups: [""]
-    resources:
-      - configmaps
-      - events
-      - persistentvolumeclaims
-      - pods
-      - serviceaccounts
-      - services
-    verbs: [get, list, watch, create, update, patch, delete]
-  - apiGroups: ["apps"]
-    resources:
-      - daemonsets
-      - deployments
-      - replicasets
-      - statefulsets
-    verbs: [get, list, watch, create, update, patch, delete]
-  - apiGroups: ["batch"]
-    resources: [jobs]
-    verbs: [get, list, watch, create, update, patch, delete]
-  - apiGroups: ["coordination.k8s.io"]
-    resources: [leases]
-    verbs: [get, list, watch, create, update, patch, delete]
-  - apiGroups: ["policy"]
-    resources: [poddisruptionbudgets]
-    verbs: [get, list, watch, create, update, patch, delete]
-  - apiGroups: ["route.openshift.io"]
-    resources: [routes]
-    verbs: [get, list, watch, create, update, patch, delete]
   - apiGroups: ["config.openshift.io"]
     resources: [ingresses]
     verbs: [get, list, watch]
@@ -45,8 +17,6 @@ rules:
     resources:
       - clusterrolebindings
       - clusterroles
-      - rolebindings
-      - roles
     verbs: [get, list, watch, create, update, patch, delete]
   - apiGroups: ["apiextensions.k8s.io"]
     resources: [customresourcedefinitions]
@@ -70,23 +40,49 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: infra-vcluster-pirate-secrets
+  name: infra-vcluster-pirate-runner
   namespace: infra-vclusters-pirate
 rules:
   - apiGroups: [""]
-    resources: [secrets]
+    resources:
+      - configmaps
+      - events
+      - persistentvolumeclaims
+      - pods
+      - resourcequotas
+      - secrets
+      - serviceaccounts
+      - services
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["apps"]
+    resources: [daemonsets, deployments, replicasets, statefulsets]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["batch"]
+    resources: [jobs]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: [leases]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["policy"]
+    resources: [poddisruptionbudgets]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["route.openshift.io"]
+    resources: [routes]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: [rolebindings, roles]
     verbs: [get, list, watch, create, update, patch, delete]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: infra-vcluster-pirate-secrets
+  name: infra-vcluster-pirate-runner
   namespace: infra-vclusters-pirate
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: infra-vcluster-pirate-secrets
+  name: infra-vcluster-pirate-runner
 subjects:
   - kind: ServiceAccount
     name: infra-vcluster-pirate-runner
