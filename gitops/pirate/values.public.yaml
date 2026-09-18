@@ -18,6 +18,10 @@ vcluster:
 oidc_secret_name: infra-server-oidc
 existing_config_secret_name: infra-server-secrets
 minio_artifact_secret_name: minio-artifact-credentials
+extra_host_aliases:
+  - ip: 10.14.217.1
+    hostnames:
+      - keycloak-infra-vcluster-infra.apps.openshift.nm.rdu4.corp.redhat.com
 
 # testMode disables the chart's GKE Ingress and ManagedCertificate resources.
 # The OpenShift Route is supplied separately by this GitOps directory.
