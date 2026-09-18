@@ -5,7 +5,7 @@ set -Eeuo pipefail
 usage() {
   cat >&2 <<'EOF'
 Usage:
-  provider create --name NAME --namespace NAMESPACE [--server SERVER]
+  provider create --name NAME --namespace NAMESPACE
   provider delete --name NAME --namespace NAMESPACE
 EOF
 }
@@ -39,27 +39,10 @@ configure_host_kubeconfig() {
 create() {
   local name=$1
   local namespace=$2
-  local server=${3:-}
-
   configure_host_kubeconfig
   mkdir -p /outputs
 
-  vcluster create "$name" \
-    --namespace "$namespace" \
-    --connect=false
-
-  if [[ -n "$server" ]]; then
-    vcluster connect "$name" \
-      --namespace "$namespace" \
-      --server="$server" \
-      --print \
-      --update-current=false > /outputs/kubeconfig
-  else
-    vcluster connect "$name" \
-      --namespace "$namespace" \
-      --print \
-      --update-current=false > /outputs/kubeconfig
-  fi
+  /usr/local/bin/bootstrap-vcluster "$namespace" "$name" > /outputs/kubeconfig
 
   printf '%s\n' "$name" > /outputs/cluster-name
 }
@@ -69,9 +52,10 @@ delete() {
   local namespace=$2
 
   configure_host_kubeconfig
-  vcluster delete "$name" \
+  helm uninstall "$name" \
     --namespace "$namespace" \
-    --ignore-not-found
+    --ignore-not-found \
+    --wait
 }
 
 [[ $# -gt 0 ]] || { usage; exit 2; }
@@ -80,12 +64,10 @@ shift
 
 name=
 namespace=
-server=
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --name) name=${2:?missing value for --name}; shift 2 ;;
     --namespace) namespace=${2:?missing value for --namespace}; shift 2 ;;
-    --server) server=${2:?missing value for --server}; shift 2 ;;
     *) echo "unknown argument: $1" >&2; usage; exit 2 ;;
   esac
 done
@@ -93,7 +75,7 @@ done
 [[ -n "$name" && -n "$namespace" ]] || { usage; exit 2; }
 
 case "$action" in
-  create) create "$name" "$namespace" "$server" ;;
+  create) create "$name" "$namespace" ;;
   delete) delete "$name" "$namespace" ;;
   *) echo "unknown action: $action" >&2; usage; exit 2 ;;
 esac
