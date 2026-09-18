@@ -38,6 +38,8 @@ spec:
             - --http-port=8080
             - --hostname-strict=false
           env:
+            - name: KC_HEALTH_ENABLED
+              value: "true"
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
