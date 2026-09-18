@@ -10,6 +10,15 @@ kind: ClusterRole
 metadata:
   name: infra-vcluster-pirate-runner
 rules:
+  - apiGroups: [""]
+    resources: [pods, nodes, nodes/status, nodes/metrics, nodes/stats, nodes/proxy]
+    verbs: [get, list, watch]
+  - apiGroups: ["storage.k8s.io"]
+    resources: [storageclasses, csinodes, csidrivers, csistoragecapacities]
+    verbs: [get, list, watch]
+  - apiGroups: ["gateway.networking.k8s.io"]
+    resources: [gatewayclasses]
+    verbs: [get, list, watch]
   - apiGroups: ["config.openshift.io"]
     resources: [ingresses]
     verbs: [get, list, watch]
