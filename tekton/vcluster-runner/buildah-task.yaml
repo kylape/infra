@@ -45,10 +45,10 @@ spec:
           --storage-driver=vfs \
           --isolation=chroot \
           --format=oci \
-          --build-arg="VCLUSTER_VERSION=$(params.vcluster-version)" \
           --build-arg="KUBECTL_VERSION=$(params.kubectl-version)" \
           --tag "$(params.image)" \
-          "$(workspaces.source.path)/provider/vcluster"
+          --file "$(workspaces.source.path)/provider/vcluster/Dockerfile" \
+          "$(workspaces.source.path)"
         buildah push \
           --storage-driver=vfs \
           "$(params.image)" \
