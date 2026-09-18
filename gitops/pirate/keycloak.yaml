@@ -55,14 +55,14 @@ spec:
               containerPort: 8080
           readinessProbe:
             httpGet:
-              path: /health/ready
-              port: 9000
+              path: /realms/master
+              port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /health/live
-              port: 9000
+              path: /realms/master
+              port: 8080
             initialDelaySeconds: 30
             periodSeconds: 20
           volumeMounts:
