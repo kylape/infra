@@ -18,6 +18,9 @@ minio_secure: false
 # chart mounts that key instead of requiring oidc_yaml in Helm values.
 oidc_secret_name: ""
 
+# Optional PEM CA bundle used to verify an external OIDC issuer.
+oidc_ca_secret_name: ""
+
 # Use pre-created configuration and artifact credential Secrets in GitOps.
 existing_config_secret_name: ""
 minio_artifact_secret_name: ""
