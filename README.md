@@ -61,6 +61,10 @@ correct tooling installed with:
 
 For additional information on how this service is deployed, please refer to the [deployment instructions](DEPLOYMENT.md).
 
+The Infra-backed vCluster architecture, Pirate PoC layout, build handoff, and
+credential boundary are documented in
+[docs/vcluster-platform.md](docs/vcluster-platform.md).
+
 ## Runbook
 
 For additional information on how to debug and remediate issues with the deployed service, please refer to the [runbook instructions](TROUBLESHOOTING.md).
