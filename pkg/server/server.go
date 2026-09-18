@@ -342,7 +342,10 @@ func grpcLocalCredentials(certFile string) (grpc.DialOption, error) {
 	return grpc.WithTransportCredentials(
 		credentials.NewTLS(&tls.Config{
 			RootCAs:    rootCAs,
-			ServerName: "localhost",
+			// The serving certificate is issued for the stable in-cluster
+			// service name. The connection remains local to this pod, but TLS
+			// verification must use a name present in the certificate.
+			ServerName: "infra-server-service",
 			// Add ALPN support for gRPC v1.67+ compatibility
 			NextProtos: []string{"h2", "http/1.1"},
 		}),
