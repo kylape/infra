@@ -2,6 +2,8 @@
 monitoring:
   enabled: true
 
+image_repository: quay.io/rhacs-eng/infra-server
+
 # Runner image used by the single proof-of-concept vCluster flavor.
 vcluster:
   runnerImage: quay.io/klape/infra:latest

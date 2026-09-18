@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: infra-server
-          image: quay.io/rhacs-eng/infra-server:{{ required "A valid .Values.tag entry is required!" .Values.tag }}
+          image: {{ default "quay.io/rhacs-eng/infra-server" .Values.image_repository }}:{{ required "A valid .Values.tag entry is required!" .Values.tag }}
           env:
             - name: TEST_MODE
               value: "{{ .Values.testMode }}"
