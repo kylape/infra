@@ -52,6 +52,9 @@ delete() {
   local namespace=$2
 
   configure_host_kubeconfig
+  kubectl delete route "$name" \
+    --namespace "$namespace" \
+    --ignore-not-found
   helm uninstall "$name" \
     --namespace "$namespace" \
     --ignore-not-found \
