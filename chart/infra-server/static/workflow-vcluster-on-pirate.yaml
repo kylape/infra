@@ -5,7 +5,7 @@ metadata:
 spec:
   entrypoint: start
   onExit: stop
-  serviceAccountName: infra-vcluster-runner
+  serviceAccountName: infra-vcluster-pirate-runner
   arguments:
     parameters:
       - name: name
