@@ -4,6 +4,7 @@ WORKDIR /go/src/github.com/stackrox/infra
 
 COPY . .
 
+ENV GOMAXPROCS=2 GOFLAGS=-p=1
 RUN make server cli
 
 FROM docker.io/library/node:24.8.0 as ui-builder
