@@ -17,7 +17,6 @@ rules:
       - namespaces
       - persistentvolumeclaims
       - pods
-      - secrets
       - serviceaccounts
       - services
     verbs: [get, list, watch, create, update, patch, delete]
@@ -63,6 +62,32 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: infra-vcluster-pirate-runner
+subjects:
+  - kind: ServiceAccount
+    name: infra-vcluster-pirate-runner
+    namespace: default
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: infra-vcluster-pirate-secrets
+  namespace: infra-vclusters
+rules:
+  - apiGroups: [""]
+    resources: [secrets]
+    verbs: [get, list, watch, create, update, patch, delete]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: infra-vcluster-pirate-secrets
+  namespace: infra-vclusters
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: infra-vcluster-pirate-secrets
 subjects:
   - kind: ServiceAccount
     name: infra-vcluster-pirate-runner
