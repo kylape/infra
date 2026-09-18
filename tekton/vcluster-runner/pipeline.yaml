@@ -17,9 +17,6 @@ spec:
     - name: image
       type: string
       description: Fully qualified destination image, including tag.
-    - name: vcluster-version
-      type: string
-      default: 0.25.1
     - name: kubectl-version
       type: string
       default: v1.32.4
@@ -59,8 +56,6 @@ spec:
       params:
         - name: image
           value: $(params.image)
-        - name: vcluster-version
-          value: $(params.vcluster-version)
         - name: kubectl-version
           value: $(params.kubectl-version)
       workspaces:
