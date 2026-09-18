@@ -10,7 +10,7 @@ spec:
     parameters:
       - name: name
       - name: namespace
-        value: infra-vclusters
+        value: infra-vclusters-pirate
 
   volumeClaimTemplates:
     - metadata:
