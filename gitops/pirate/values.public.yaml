@@ -16,6 +16,7 @@ vcluster:
 # Bootstrap this Secret once in the management vCluster. It contains the
 # OIDC configuration, including the persistent session signing key.
 oidc_secret_name: infra-server-oidc
+oidc_ca_secret_name: infra-oidc-ca
 existing_config_secret_name: infra-server-secrets
 minio_artifact_secret_name: minio-artifact-credentials
 extra_host_aliases:
