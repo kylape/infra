@@ -72,21 +72,19 @@ spec:
             - mountPath: /configuration
               name: configuration
               readOnly: true
-            {{- if .Values.oidc_secret_name }}
-            - mountPath: /configuration/oidc.yaml
-              name: oidc-configuration
-              subPath: oidc.yaml
-              readOnly: true
-            {{- end }}
 
       volumes:
         - name: configuration
+          {{- if .Values.oidc_secret_name }}
+          projected:
+            sources:
+              - secret:
+                  name: infra-server-secrets
+              - secret:
+                  name: {{ .Values.oidc_secret_name }}
+          {{- else }}
           secret:
             secretName: infra-server-secrets
-        {{- if .Values.oidc_secret_name }}
-        - name: oidc-configuration
-          secret:
-            secretName: {{ .Values.oidc_secret_name }}
-        {{- end }}
+          {{- end }}
       imagePullSecrets:
         - name: infra-image-registry-pull-secret
