@@ -8,10 +8,10 @@ environment: development
 monitoring:
   enabled: false
 testMode: true
-tag: minio-poc-20260918
+tag: oidc-grpc-fix-20260918
 image_repository: quay.io/klape/infra
 vcluster:
-  runnerImage: quay.io/klape/infra:minio-poc-20260918
+  runnerImage: quay.io/klape/infra:oidc-grpc-fix-20260918
 
 # Bootstrap this Secret once in the management vCluster. It contains the
 # OIDC configuration, including the persistent session signing key.
