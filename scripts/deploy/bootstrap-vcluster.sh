@@ -89,7 +89,7 @@ spec:
     kind: Service
     name: $VCLUSTER_NAME
   port:
-    targetPort: 443
+    targetPort: https
   tls:
     termination: passthrough
 EOF
