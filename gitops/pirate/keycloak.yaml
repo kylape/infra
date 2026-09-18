@@ -40,6 +40,10 @@ spec:
           env:
             - name: KC_HEALTH_ENABLED
               value: "true"
+            - name: KC_PROXY_HEADERS
+              value: xforwarded
+            - name: KC_HOSTNAME
+              value: https://keycloak-infra-vcluster-infra.apps.openshift.nm.rdu4.corp.redhat.com
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
