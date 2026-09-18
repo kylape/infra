@@ -43,8 +43,11 @@ if [[ -z "${ROUTE_HOST:-}" ]]; then
   ROUTE_HOST="${ROUTE_NAME}-${HOST_NAMESPACE}.${ROUTE_DOMAIN}"
 fi
 
-echo "Creating namespace $HOST_NAMESPACE if needed" >&2
-kubectl create namespace "$HOST_NAMESPACE" --dry-run=client -o yaml 1>&2 | kubectl apply -f - 1>&2
+echo "Verifying namespace $HOST_NAMESPACE exists" >&2
+if ! kubectl get namespace "$HOST_NAMESPACE" >/dev/null 2>&1; then
+  echo "namespace $HOST_NAMESPACE does not exist; provision the target-cluster namespace before deploying vClusters" >&2
+  exit 1
+fi
 
 echo "Installing vCluster $VCLUSTER_NAME in $HOST_NAMESPACE" >&2
 chart_dir="$(mktemp -d)"
