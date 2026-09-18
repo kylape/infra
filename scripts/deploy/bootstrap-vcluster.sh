@@ -25,7 +25,7 @@ fi
 HOST_NAMESPACE="$1"
 VCLUSTER_NAME="$2"
 VCLUSTER_CHART_REPOSITORY="${VCLUSTER_CHART_REPOSITORY:-oci://quay.io/klape/charts/vcluster}"
-VCLUSTER_CHART_VERSION="${VCLUSTER_CHART_VERSION:-0.0.1}"
+VCLUSTER_CHART_VERSION="${VCLUSTER_CHART_VERSION:-0.0.1-combined.2}"
 VCLUSTER_IMAGE_REGISTRY="${VCLUSTER_IMAGE_REGISTRY:-quay.io}"
 VCLUSTER_IMAGE_REPOSITORY="${VCLUSTER_IMAGE_REPOSITORY:-klape/vcluster}"
 VCLUSTER_IMAGE_TAG="${VCLUSTER_IMAGE_TAG:-csi-capacity-debug}"
@@ -56,6 +56,7 @@ helm pull "$VCLUSTER_CHART_REPOSITORY" \
   --untar --untardir "$chart_dir"
 helm upgrade --install "$VCLUSTER_NAME" "$chart_dir/vcluster" \
   --namespace "$HOST_NAMESPACE" \
+  --set controlPlane.statefulSet.security.profile=restricted \
   --set controlPlane.statefulSet.image.registry="$VCLUSTER_IMAGE_REGISTRY" \
   --set controlPlane.statefulSet.image.repository="$VCLUSTER_IMAGE_REPOSITORY" \
   --set controlPlane.statefulSet.image.tag="$VCLUSTER_IMAGE_TAG" \
