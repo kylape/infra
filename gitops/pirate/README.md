@@ -41,6 +41,18 @@ The Helm chart mounts this Secret into the Infra server without copying its
 contents into rendered Helm values. A secret delivery controller can replace
 this one-time bootstrap step later.
 
+Create the Keycloak administrator Secret before syncing the Application:
+
+```bash
+kubectl create namespace keycloak
+kubectl create secret generic keycloak-admin \
+  --namespace keycloak \
+  --from-literal=username=admin \
+  --from-literal=password='<random-password>'
+```
+
+Keycloak is deployed in development mode with ephemeral storage for this PoC.
+
 The host OpenShift Route is applied separately after vCluster service
 synchronization exposes the Infra Service in the management vCluster's host
 namespace. The Route uses passthrough TLS to the Infra service.
