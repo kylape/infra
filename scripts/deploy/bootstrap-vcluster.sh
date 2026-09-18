@@ -60,6 +60,7 @@ helm upgrade --install "$VCLUSTER_NAME" "$chart_dir/vcluster" \
   --set controlPlane.statefulSet.image.registry="$VCLUSTER_IMAGE_REGISTRY" \
   --set controlPlane.statefulSet.image.repository="$VCLUSTER_IMAGE_REPOSITORY" \
   --set controlPlane.statefulSet.image.tag="$VCLUSTER_IMAGE_TAG" \
+  --set-string controlPlane.proxy.extraSANs[0]="$ROUTE_HOST" \
   --set sync.fromHost.nodes.enabled=true \
   --set sync.toHost.pods.enabled=true \
   --set sync.toHost.gatewayApi.enabled=true \
